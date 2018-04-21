@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import TwitterKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,7 +16,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        TWTRTwitter.sharedInstance().start(withConsumerKey: "X8v145loRab4Gfpq2ObyLpgBi", consumerSecret: "hiudlfWFFYHinygiCuu1ZMVYoQgmemMfsUmVXiiwOO5nnmXVna")
+        
+        if !TWTRTwitter.sharedInstance().sessionStore.hasLoggedInUsers() {
+            let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+            let loginVC = storyboard.instantiateViewController(withIdentifier: LOGIN_VC_ID)
+            window?.makeKeyAndVisible()
+            window?.rootViewController?.present(loginVC, animated: true, completion: nil)
+        }
+        
         return true
     }
 
@@ -41,6 +50,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        return TWTRTwitter.sharedInstance().application(app, open: url, options: options)
+    }
 
 }
 
