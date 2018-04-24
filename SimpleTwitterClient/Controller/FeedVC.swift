@@ -37,6 +37,17 @@ class FeedVC: UIViewController, TWTRTweetViewDelegate {
             configureViewWhenLoggedIn()
             loadTweets()
         }
+        
+        let key = TwitterAPI.instance.consumerKey
+        let secret = TwitterAPI.instance.consumerSecret
+        let token = TwitterAPI.instance.userAuthToken
+        let tokenSecret = TwitterAPI.instance.userAuthTokenSecret
+        
+        TwitterAPI.instance.getHomeTimeline(withConsumerKey: key, consumerSecret: secret, accessToken: token!, andAccessTokenSecret: tokenSecret!) { (success) in
+            if success {
+                print("SUCCESS!!!")
+            }
+        }
     }
     
     // Methods
@@ -73,7 +84,7 @@ class FeedVC: UIViewController, TWTRTweetViewDelegate {
                 }
                 self.isLoadingTweets = false
             } else {
-                print("Ther was an error with obtaining tweets: \(String(describing: error?.localizedDescription))")
+                print("There was an error with obtaining tweets: \(String(describing: error?.localizedDescription))")
                 self.isLoadingTweets = false
             }
         }
