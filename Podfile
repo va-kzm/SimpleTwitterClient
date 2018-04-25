@@ -7,4 +7,5 @@ target 'SimpleTwitterClient' do
 
   # Pods for SimpleTwitterClient
   pod 'TwitterKit'
+  pod 'OhhAuth'
 end

@@ -1,20 +1,24 @@
 PODS:
+  - OhhAuth (1.0.0)
   - TwitterCore (3.1.0)
   - TwitterKit (3.3.0):
     - TwitterCore (>= 3.1.0)
 
 DEPENDENCIES:
+  - OhhAuth
   - TwitterKit
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
+    - OhhAuth
     - TwitterCore
     - TwitterKit
 
 SPEC CHECKSUMS:
+  OhhAuth: 82863d7a9aa2a749eb2c65551281c01f3facf501
   TwitterCore: 644d59e75abccb26cf0a9050d2c4dea0e5412241
   TwitterKit: a2e60ddcedbf54091eac6f27685ca7a87681e1d7
 
-PODFILE CHECKSUM: b7e222fc569c0a21aa126b077a366de8256187da
+PODFILE CHECKSUM: cfd08b94188f08066817bfa19ac1adecb8ee4742
 
 COCOAPODS: 1.5.0.beta.1
