@@ -13,10 +13,7 @@ import OhhAuth
 class TwitterAPI {
     // Properties
     static let instance = TwitterAPI()
-    
-    private let consumerKey = "X8v145loRab4Gfpq2ObyLpgBi"
-    private let consumerSecret = "hiudlfWFFYHinygiCuu1ZMVYoQgmemMfsUmVXiiwOO5nnmXVna"
-    
+    private let authConfig = TWTRTwitter.sharedInstance().authConfig
     private let userAuthToken = TWTRTwitter.sharedInstance().sessionStore.session()?.authToken
     private let userAuthTokenSecret = TWTRTwitter.sharedInstance().sessionStore.session()?.authTokenSecret
     
@@ -26,27 +23,30 @@ class TwitterAPI {
         let timestamp = Int(NSDate().timeIntervalSince1970)
         let oauthNonce = String.random(length: 32)
         
+        let consumerKey = authConfig.consumerKey
+        let consumerSecret = authConfig.consumerSecret
+        
         let cc = (key: consumerKey, secret: consumerSecret)
         let uc = (key: userAuthToken!, secret: userAuthTokenSecret!)
         
         let signature = OhhAuth.calculateSignature(url: URL(string: urlString)!, method: "GET", parameter: [:], consumerCredentials: cc, userCredentials: uc)
         
-        var authorizationHeaderValue = "OAuth "
-        authorizationHeaderValue += prepareKeyValuePairForHeader(usingKey: "oauth_consumer_key", andValue: consumerKey, isLastPair: false)
-        authorizationHeaderValue += prepareKeyValuePairForHeader(usingKey: "oauth_token", andValue: userAuthToken!, isLastPair: false)
-        authorizationHeaderValue += prepareKeyValuePairForHeader(usingKey: "oauth_signature_method", andValue: "HMAC-SHA1", isLastPair: false)
-        authorizationHeaderValue += prepareKeyValuePairForHeader(usingKey: "oauth_timestamp", andValue: "\(timestamp)", isLastPair: false)
-        authorizationHeaderValue += prepareKeyValuePairForHeader(usingKey: "oauth_nonce", andValue: oauthNonce, isLastPair: false)
-        authorizationHeaderValue += prepareKeyValuePairForHeader(usingKey: "oauth_version", andValue: "1.0", isLastPair: false)
-        authorizationHeaderValue += prepareKeyValuePairForHeader(usingKey: "oauth_signature", andValue: signature, isLastPair: true)
+//        var authorizationHeaderValue = "OAuth "
+//        authorizationHeaderValue += prepareKeyValuePairForHeader(usingKey: "oauth_consumer_key", andValue: consumerKey, isLastPair: false)
+//        authorizationHeaderValue += prepareKeyValuePairForHeader(usingKey: "oauth_token", andValue: userAuthToken!, isLastPair: false)
+//        authorizationHeaderValue += prepareKeyValuePairForHeader(usingKey: "oauth_signature_method", andValue: "HMAC-SHA1", isLastPair: false)
+//        authorizationHeaderValue += prepareKeyValuePairForHeader(usingKey: "oauth_timestamp", andValue: "\(timestamp)", isLastPair: false)
+//        authorizationHeaderValue += prepareKeyValuePairForHeader(usingKey: "oauth_nonce", andValue: oauthNonce, isLastPair: false)
+//        authorizationHeaderValue += prepareKeyValuePairForHeader(usingKey: "oauth_version", andValue: "1.0", isLastPair: false)
+//        authorizationHeaderValue += prepareKeyValuePairForHeader(usingKey: "oauth_signature", andValue: signature, isLastPair: true)
         
-//        let authorizationValue = """
-//        OAuth oauth_consumer_key="\(consumerKey)",oauth_token="\(userAuthToken!)",oauth_signature_method="HMAC-SHA1",oauth_timestamp="\(timestamp)",oauth_nonce="\(oauthNonce)",oauth_version="1.0",oauth_signature="\(signature)"
-//        """
+        print("!!!! This is signature: \(signature)")
         
         var request = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "GET"
-        request.allHTTPHeaderFields = ["Authorization": authorizationHeaderValue]
+        request.allHTTPHeaderFields = [
+            "Authorization": "OAuth oauth_consumer_key=\"\(consumerKey)\", oauth_token=\"\(userAuthToken!)\", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"\(timestamp)\", oauth_nonce=\"\(oauthNonce)\", oauth_version=\"1.0\", oauth_signature=\"\(signature)\""
+        ]
         
 //        if let session = TWTRTwitter.sharedInstance().sessionStore.session() as? TWTRSession {
 //            let headerSigner = TWTROAuthSigning(authConfig: TWTRTwitter.sharedInstance().authConfig, authSession: session)
@@ -55,9 +55,9 @@ class TwitterAPI {
         
         //request.oAuthSign(method: "GET", urlFormParameters: [:], consumerCredentials: cc, userCredentials: uc)
         
-        print("!!!!!!!!!! Authorudqdwdqd \(authorizationHeaderValue)")
+        //print("!!!!!!!!!! Authorudqdwdqd \(authorizationHeaderValue)")
         print("!!!!!!!!!! Signature: \(signature)")
-        print("!!!!!!!!!! \(String(describing: request.allHTTPHeaderFields))")
+        print("!!!!!!!!!! Header: \(String(describing: request.allHTTPHeaderFields))")
         
         let dataTask = URLSession(configuration: .default).dataTask(with: request) { (data, response, error) in
             if let data = data {
@@ -77,6 +77,39 @@ class TwitterAPI {
         dataTask.resume()
     }
     
+    func getHomeTimelineUsingOhhAuth(completion: @escaping (_ success: Bool) -> ()) {
+        let consumerKey = authConfig.consumerKey
+        let consumerSecret = authConfig.consumerSecret
+        
+        let cc = (key: consumerKey, secret: consumerSecret)
+        let uc = (key: userAuthToken!, secret: userAuthTokenSecret!)
+        
+        var request = URLRequest(url: URL(string: "https://api.twitter.com/1.1/statuses/home_timeline.json")!)
+        
+        //let paras = ["status": "Hey Twitter! \u{1F6A7} Take a look at this sweet UUID: \(UUID())"]
+        
+        request.oAuthSign(method: "Get", urlFormParameters: [:], consumerCredentials: cc, userCredentials: uc)
+        
+        print("!!!!!!! Header: \(String(describing: request.allHTTPHeaderFields))")
+        
+        let task = URLSession(configuration: .ephemeral).dataTask(with: request) { (data, response, error) in
+            
+            if error == nil {
+                if let data = data {
+                    do {
+                        if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                            print("!!!! This is json: \(json)")
+                            completion(true)
+                        }
+                    } catch {
+                        debugPrint(error.localizedDescription)
+                    }
+                }
+            }
+        }
+        task.resume()
+    }
+    
     func prepareKeyValuePairForHeader(usingKey key: String, andValue value: String, isLastPair: Bool) -> String {
         var str = key.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
         str += "="
@@ -88,7 +121,7 @@ class TwitterAPI {
             str += ","
             str += " "
         }
-        
+        print("!!!!!!!! str: \(str)")
         return str
     }
 }

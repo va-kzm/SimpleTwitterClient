@@ -10,16 +10,10 @@ import UIKit
 import TwitterKit
 
 // An attempt to implement Home Timeline manually using TwitterKit.
-// Not completed.
 
 class FeedVC: UIViewController, TWTRTweetViewDelegate {
     // Properties
-    var tweets: [TWTRTweet] = [] {
-        didSet {
-            tableView.reloadData()
-        }
-    }
-    
+    var tweets: [[TWTRTweet]] = []
     var isLoadingTweets = false
     var prototypeCell: TWTRTweetTableViewCell?
     
@@ -37,11 +31,14 @@ class FeedVC: UIViewController, TWTRTweetViewDelegate {
             configureViewWhenLoggedIn()
             loadTweets()
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
-        TwitterAPI.instance.getHomeTimeline { (success) in
-            if success {
-                print("DON'T FORGET TO DELETE ME")
-            }
+        if TWTRTwitter.sharedInstance().sessionStore.hasLoggedInUsers() {
+            configureViewWhenLoggedIn()
+            loadTweets()
         }
     }
     
@@ -71,45 +68,26 @@ class FeedVC: UIViewController, TWTRTweetViewDelegate {
         
         let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID
         let client = TWTRAPIClient(userID: userID)
-        let tweetIDs = ["20", "510908133917487104"]
-        client.loadTweets(withIDs: tweetIDs) { (tweets, error) in
-            if tweets != nil {
-                for tweet in tweets! {
-                    self.tweets.append(tweet)
+
+        var clientError: NSError?
+        let urlRequest = client.urlRequest(withMethod: "GET", urlString: "https://api.twitter.com/1.1/statuses/home_timeline.json?count=50", parameters: nil, error: &clientError)
+
+        client.sendTwitterRequest(urlRequest) { (response, data, error) in
+            if error == nil {
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data!, options: [])
+                    
+                    let tweets = TWTRTweet.tweets(withJSONArray: json as? [Any])
+                    self.tweets.append(tweets as! [TWTRTweet])
+                    self.tableView.reloadData()
+                    print("json: \(json)")
+                } catch let jsonError as NSError {
+                    print("json error: \(jsonError.localizedDescription)")
                 }
-                self.isLoadingTweets = false
             } else {
-                print("There was an error with obtaining tweets: \(String(describing: error?.localizedDescription))")
-                self.isLoadingTweets = false
+                print("error: \(String(describing: error?.localizedDescription))")
             }
         }
-        
-        // An attempt to get the home timeline by sending a GET http request to Twitter's API, by using the TwitterKit TWTRAPIClient.
-        //--------------------------------------------------
-//
-//        let parameters: [String: Any] = [
-//            "Count": 5
-//        ]
-//
-//        var clientError: NSError?
-//
-//        let urlRequest = client.urlRequest(withMethod: "GET", urlString: "https://api.twitter.com/1.1/statuses/home_timeline.json", parameters: nil, error: &clientError)
-//
-//        client.sendTwitterRequest(urlRequest) { (response, data, error) in
-//            if error == nil {
-//                do {
-//                    let json = try JSONSerialization.jsonObject(with: data!, options: [])
-//
-//                    print("json: \(json)")
-//                } catch let jsonError as NSError {
-//                    print("json error: \(jsonError.localizedDescription)")
-//                }
-//            } else {
-//                print("error: \(String(describing: error?.localizedDescription))")
-//            }
-//        }
-//
-        //--------------------------------------------------
     }
     
     // Actions
@@ -117,18 +95,22 @@ class FeedVC: UIViewController, TWTRTweetViewDelegate {
         let sessionStore = TWTRTwitter.sharedInstance().sessionStore
         if let userId = sessionStore.session()?.userID {
             sessionStore.logOutUserID(userId)
+            tweets.removeAll()
+            tableView.reloadData()
             
             let loginVC = storyboard?.instantiateViewController(withIdentifier: LOGIN_VC_ID)
             present(loginVC!, animated: true, completion: nil)
         }
-        
-        // After logout the login screen must be shown and user data cleared
     }
 }
 
 extension FeedVC: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return tweets.count
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tweets[section].count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -136,16 +118,24 @@ extension FeedVC: UITableViewDelegate, UITableViewDataSource {
         
         cell.tweetView.showActionButtons = true
         
-        let tweet = tweets[indexPath.row]
+        let tweet = tweets[indexPath.section][indexPath.row]
         cell.configure(with: tweet)
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let tweet = tweets[indexPath.row]
+        let tweet = tweets[indexPath.section][indexPath.row]
         prototypeCell?.configure(with: tweet)
         
         return TWTRTweetTableViewCell.height(for: tweet, style: TWTRTweetViewStyle.compact, width: self.view.bounds.width, showingActions: true)
     }
+    
+//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        if indexPath.row == (tweets.last?.count)! - 1 {
+//            loadTweets()
+//            tableView.reloadData()
+//            print("!!!!!!!!!! loaded more tweets.")
+//        }
+//    }
 }

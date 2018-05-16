@@ -96,6 +96,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bzx-4K-PZZ">
                                 <rect key="frame" x="0.0" y="75" width="375" height="543"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -118,87 +119,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PNL-FC-Chp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1958" y="133"/>
-        </scene>
-        <!--Feed-->
-        <scene sceneID="dZR-AM-uqe">
-            <objects>
-                <tableViewController id="rAL-Ke-yQK" customClass="RealFeedVC" customModule="SimpleTwitterClient" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="da7-D6-D0C">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="cTz-VZ-K0z">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cTz-VZ-K0z" id="kJ0-9X-bCg">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="rAL-Ke-yQK" id="vh8-sW-O1e"/>
-                            <outlet property="delegate" destination="rAL-Ke-yQK" id="wEH-pW-M5D"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Feed" id="dTW-mA-Yng"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jZM-ME-Ex9" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2906" y="902"/>
-        </scene>
-        <!--Feed Test-->
-        <scene sceneID="SIr-kZ-eZ5">
-            <objects>
-                <navigationController id="ci9-UN-aso" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Feed Test" image="feed-tabIcon" selectedImage="feed-tabIcon" id="J3s-Bx-6q7"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="hl1-gW-Nfk">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="rAL-Ke-yQK" kind="relationship" relationship="rootViewController" id="XJC-DP-UOB"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="EKZ-rt-Iyh" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1958" y="902"/>
-        </scene>
-        <!--Tweets-->
-        <scene sceneID="79b-P1-uyz">
-            <objects>
-                <tableViewController id="dMQ-2a-Gp0" customClass="RealTweetsVC" customModule="SimpleTwitterClient" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="oYs-tq-Zq4">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="gXG-i4-5bF">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gXG-i4-5bF" id="9WK-R3-b5i">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="dMQ-2a-Gp0" id="8PJ-Fv-0S0"/>
-                            <outlet property="delegate" destination="dMQ-2a-Gp0" id="gwl-ce-f3Y"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Tweets" id="4Az-ON-Q45"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="cSg-sW-Kg2" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <view contentMode="scaleToFill" id="Q6y-Fd-XfZ">
-                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <viewLayoutGuide key="safeArea" id="NtE-mB-RHN"/>
-                </view>
-            </objects>
-            <point key="canvasLocation" x="1958" y="1698"/>
         </scene>
         <!--Feed-->
         <scene sceneID="Wbz-aR-WEo">
@@ -255,6 +175,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="TrX-pv-C0h">
                                 <rect key="frame" x="0.0" y="75" width="375" height="543"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -293,37 +214,11 @@
                     <connections>
                         <segue destination="Oal-yg-DMC" kind="relationship" relationship="viewControllers" id="szx-eq-oKM"/>
                         <segue destination="rZN-e5-MPK" kind="relationship" relationship="viewControllers" id="nMr-04-y4V"/>
-                        <segue destination="ci9-UN-aso" kind="relationship" relationship="viewControllers" id="jaX-n5-ucy"/>
-                        <segue destination="BF5-fC-iwn" kind="relationship" relationship="viewControllers" id="eS4-zW-foF"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0UA-vW-Mmm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1017" y="133"/>
-        </scene>
-        <!--Tweets Test-->
-        <scene sceneID="jCg-xw-hf5">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="BF5-fC-iwn" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Tweets Test" image="compose" selectedImage="compose" id="Tb4-Bh-bLr"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="uTS-Xd-wve">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="tintColor" red="0.1647058824" green="0.63921568630000003" blue="0.93725490199999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <textAttributes key="titleTextAttributes">
-                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                        </textAttributes>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="dMQ-2a-Gp0" kind="relationship" relationship="rootViewController" id="W95-Rx-Lrr"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="nXZ-QD-BEl" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1017" y="1698"/>
         </scene>
     </scenes>
     <resources>
