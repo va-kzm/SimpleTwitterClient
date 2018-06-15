@@ -17,7 +17,6 @@ class FeedVC: UIViewController, TWTRTweetViewDelegate {
     var isLoadingTweets = false
     var prototypeCell: TWTRTweetTableViewCell?
     
-    
     // Outlets
     @IBOutlet weak var userProfileIcon: UIImageView!
     @IBOutlet weak var tableView: UITableView!

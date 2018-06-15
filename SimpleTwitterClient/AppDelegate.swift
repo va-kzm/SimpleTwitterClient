@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        TWTRTwitter.sharedInstance().start(withConsumerKey: "X8v145loRab4Gfpq2ObyLpgBi", consumerSecret: "hiudlfWFFYHinygiCuu1ZMVYoQgmemMfsUmVXiiwOO5nnmXVna")
+        TWTRTwitter.sharedInstance().start(withConsumerKey: "7oZdHWaNSqN6rMhmd4Ymoi2xZ", consumerSecret: "TDS6n6eclkUh3x9MSV4uUMC4hm6UPzGYtqmFrCyzJ4HlVjuUaE")
         
         if !TWTRTwitter.sharedInstance().sessionStore.hasLoggedInUsers() {
             let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
@@ -53,6 +53,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         return TWTRTwitter.sharedInstance().application(app, open: url, options: options)
     }
-
 }
-
